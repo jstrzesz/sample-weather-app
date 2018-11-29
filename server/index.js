@@ -39,6 +39,7 @@ app.post('/forecast', (req, res) => {
           city: data.name,
           country: data.country,
           population: data.population,
+          // day: data.dt_txt.slice(0, )
           date: day.dt,
           temp: day.main.temp,
           min_temp: day.main.temp_min,
