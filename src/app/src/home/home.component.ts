@@ -10,6 +10,7 @@ export class HomeComponent implements OnInit {
 
   input: String;
   weatherInfo = [];
+  forecastInfo = [];
 
   constructor(private httpClient: HttpClient) { }
 
@@ -37,6 +38,8 @@ export class HomeComponent implements OnInit {
     })
     .subscribe(data => {
       console.log(data, 'line 45')
+      this.forecastInfo.push(data);
+      console.log(this.forecastInfo)
     })
   }
 

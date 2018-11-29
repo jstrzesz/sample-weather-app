@@ -34,21 +34,24 @@ app.post('/forecast', (req, res) => {
   weather.get5DayForecast(req.body.params.input)
     .then(data => {
       console.log(data, 'line 35');
-      data.list.forEach(day => {
-        forecastInfo.city = data.name;
-        forecastInfo.country = data.country;
-        forecastInfo.population = data.population;
-        forecastInfo.date = day.dt;
-        forecastInfo.temp = day.main.temp;
-        forecastInfo.min_temp = day.main.temp_min;
-        forecastInfo.max_temp = day.main.temp_max;
-        forecastInfo.pressure = day.main.pressure;
-        forecastInfo.weather = day.weather[0].main;
-        forecastInfo.weatherDesc = day.weather[0].description;
-        forecastInfo.windSpeed = day.wind.speed;
-        forecastInfo.windDir = day.wind.deg;
-        // forecastInfo.sys = day.sys;
-        forecastInfo.date_text = day.dt_txt;
+      forecastInfoArray = data.list.map(day => {
+        return {
+          city: data.name,
+          country: data.country,
+          population: data.population,
+          date: day.dt,
+          temp: day.main.temp,
+          min_temp: day.main.temp_min,
+          max_temp: day.main.temp_max,
+          pressure: day.main.pressure,
+          weather: day.weather[0].main,
+          weatherDesc: day.weather[0].description,
+          windSpeed: day.wind.speed,
+          windDir: day.wind.deg,
+          // sys: day.sys;
+          date_text: day.dt_txt
+
+        }
         forecastInfoArray.push(forecastInfo);
       })
       res.send(forecastInfoArray);
