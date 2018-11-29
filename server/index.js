@@ -33,13 +33,14 @@ app.post('/forecast', (req, res) => {
   let forecastInfo = {};
   weather.get5DayForecast(req.body.params.input)
     .then(data => {
-      console.log(data, 'line 35');
+      console.log(data.city, 'line 35');
       forecastInfoArray = data.list.map(day => {
         return {
-          city: data.name,
-          country: data.country,
-          population: data.population,
-          // day: data.dt_txt.slice(0, )
+          city: data.city.name,
+          country: data.city.country,
+          population: data.city.population,
+          day: day.dt_txt.slice(0, 10),
+          minute: day.dt_txt.slice(-8),
           date: day.dt,
           temp: day.main.temp,
           min_temp: day.main.temp_min,
