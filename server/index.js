@@ -39,12 +39,12 @@ app.post('/forecast', (req, res) => {
           city: data.city.name,
           country: data.city.country,
           population: data.city.population,
-          day: day.dt_txt.slice(0, 10),
-          minute: day.dt_txt.slice(-8),
+          day: day.dt_txt.slice(5, 10),
+          hour: day.dt_txt.slice(-8),
           date: day.dt,
           temp: day.main.temp,
-          min_temp: day.main.temp_min,
-          max_temp: day.main.temp_max,
+          min_temp: Math.ceil(day.main.temp_min),
+          max_temp: Math.ceil(day.main.temp_max),
           pressure: day.main.pressure,
           weather: day.weather[0].main,
           weatherDesc: day.weather[0].description,
@@ -54,7 +54,7 @@ app.post('/forecast', (req, res) => {
           date_text: day.dt_txt
 
         }
-        forecastInfoArray.push(forecastInfo);
+        // forecastInfoArray.push(forecastInfo);
       })
       res.send(forecastInfoArray);
     })

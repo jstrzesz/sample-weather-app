@@ -11,6 +11,7 @@ export class HomeComponent implements OnInit {
   input: String;
   weatherInfo = [];
   forecastInfo: any;
+  dailyForecast: any;
 
   constructor(private httpClient: HttpClient) { }
 
@@ -38,8 +39,15 @@ export class HomeComponent implements OnInit {
     })
     .subscribe(data => {
       console.log(data, 'line 45')
+      const dailyForecast = [];
       this.forecastInfo = data;
-      console.log(this.forecastInfo)
+      this.forecastInfo.forEach(day => {
+        if (day.hour === '12:00:00') {
+          dailyForecast.push(day);
+        }
+      })
+      this.dailyForecast = dailyForecast;
+      console.log(this.dailyForecast);
     })
   }
 
