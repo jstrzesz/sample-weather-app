@@ -8,14 +8,16 @@
               (input)="getCity($event)" />
       <button class="submit"
               (click)="getCurrentWeather()">Submit</button>
+      <button class="button"
+              (click)="get5DayForecast()">5 Day Forecast</button>
     </div>
     <div class="col-md-2"></div>
   </div>
+  <br>
   <div class="row">
     <div class="col-md-2"></div>
     <div class="col-md-8" *ngFor="let weather of weatherInfo">
       <div class="jumbotron">
-
         <h1>
           {{ weather.city }} {{ weather.country }} {{ weather.temp }}˚
         </h1>
@@ -24,16 +26,17 @@
     <div class="col-md-2"></div>
   </div>
   <div class="row">
+
     <div class="col-md-12">
-      <button type="button" class="btn btn-success" (click)="get5DayForecast()">5 Day</button>
-      <table class="table" style="text-align: center">
+      <button type="button" class="btn btn-success" (click)="goHome()">Home</button>
+        <table class="table" style="text-align: center">
         <thead>
           <tr>
             <th>Day</th>
-            <th>Description</th>
+            <th>Weather Description</th>
             <th>Temperature: High/Low</th>
             <th>Wind</th>
-            <th>Barometric Pressure</th>
+            <th>Pressure</th>
           </tr>
         </thead>
         <tbody *ngFor="let day of dailyForecast">
@@ -43,9 +46,10 @@
             <td>{{ day.max_temp }}˚/{{ day.min_temp }}˚</td>
             <td>{{ day.windSpeed }} mph</td>
             <td>{{ day.pressure }}</td>
+            <!-- <app-five-day-forecast [data]="day"></app-five-day-forecast> -->
           </tr>
         </tbody>
       </table>
     </div>
   </div>
-</div>>
+</div>

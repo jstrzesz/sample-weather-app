@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -12,8 +13,10 @@ export class HomeComponent implements OnInit {
   weatherInfo = [];
   forecastInfo: any;
   dailyForecast: any;
+  example: String = 'Hello';
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient,
+              private router: Router) { }
 
   getCity(e) {
     this.input = e.target.value;
@@ -48,7 +51,12 @@ export class HomeComponent implements OnInit {
       })
       this.dailyForecast = dailyForecast;
       console.log(this.dailyForecast);
+      // this.redirectToFiveDayForecast();
     })
+  }
+
+  redirectToFiveDayForecast() {
+    this.router.navigate(['/fiveDayForecast']);
   }
 
   filterDayAndNightForForecast() {
