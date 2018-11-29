@@ -2,12 +2,31 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const port = process.env.PORT || 3000;
 const app = express();
+const weather = require('../api_helpers/api_helper');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get('/south_park', (req, res) => {
-  res.send({ name: 'Cartman'})
+app.post('/currentWeather', (req, res) => {
+  console.log(req.body.params.input, 'line 11');
+  let weatherInfo = {};
+  weather.getCurrentWeather(req.body.params.input, (body) => {
+      const parsed = JSON.parse(body);
+      weatherInfo.city = parsed.name;
+      weatherInfo.temp = parsed.main.temp;
+      weatherInfo.country = parsed.sys.country;
+      weatherInfo.forecast = parsed.weather[0].main;
+      res.send(weatherInfo);
+  })
+})
+
+app.post('/forecast', (req, res) => {
+  console.log(req.body.params.input, 'line 24')
+  let forecastInfo = {};
+  weather.get5DayForecast(req.body.params.input, (body) => {
+    const parsed = JSON.parse(body);
+    console.log(parsed, 'line 27')
+  })
 })
 
 app.listen(port, () => {

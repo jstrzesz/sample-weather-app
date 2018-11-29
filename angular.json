@@ -58,7 +58,8 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "sample-weather-app:build",
-            "proxyConfig": "proxy.conf.json"
+            "proxyConfig": "proxy.config.json",
+            "port": 3030
           },
           "configurations": {
             "production": {
