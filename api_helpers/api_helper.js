@@ -11,12 +11,11 @@ module.exports = {
       }
       console.log(options)
       request(options, (error, response) => {
-        console.log(response, 'line 14')
+        // console.log(response, 'line 14')
         const parsedBody = JSON.parse(response.body);
-        if (error) {
-          console.error(error);
-        } else if (response) {
-          resolve(response)
+        // console.log(parsedBody, 'line 16')
+        if (response) {
+          resolve(parsedBody)
         } else {
           reject('failed')
         }

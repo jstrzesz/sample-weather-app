@@ -13,11 +13,14 @@
   </div>
   <div class="row">
     <div class="col-md-2"></div>
-    <div class="col-md-8">
-      <h1>
-        {{ city }} {{ country }} {{ temperature }}
-      </h1>
-      <p>Forecast: {{ forecast }} </p>
+    <div class="col-md-8" *ngFor="let weather of weatherInfo">
+      <div class="jumbotron">
+
+        <h1>
+          {{ weather.city }} {{ weather.country }} {{ weather.temp }}˚
+        </h1>
+        <p>Forecast: {{ weather.forecast }} </p>
+      </div>
     </div>
     <div class="col-md-2"></div>
   </div>

@@ -9,10 +9,7 @@ import { HttpClient } from '@angular/common/http';
 export class HomeComponent implements OnInit {
 
   input: String;
-  city: String;
-  country: String;
-  temperature: Number;
-  forecast: String;
+  weatherInfo = [];
 
   constructor(private httpClient: HttpClient) { }
 
@@ -28,10 +25,7 @@ export class HomeComponent implements OnInit {
     })
       .subscribe(data => {
         console.log(data, 'line 25');
-        this.city = data.city;
-        this.temperature = Math.ceil(data.temp);
-        this.country = data.country;
-        this.forecast = data.forecast;
+        this.weatherInfo.push(data);
       })
   }
 

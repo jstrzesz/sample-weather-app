@@ -10,14 +10,30 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.post('/currentWeather', (req, res) => {
   console.log(req.body.params.input, 'line 11');
   let weatherInfo = {};
-  weather.getCurrentWeather(req.body.params.input, (body) => {
-      const parsed = JSON.parse(body);
-      weatherInfo.city = parsed.name;
-      weatherInfo.temp = parsed.main.temp;
-      weatherInfo.country = parsed.sys.country;
-      weatherInfo.forecast = parsed.weather[0].main;
-      res.send(weatherInfo);
-  })
+  weather.getCurrentWeather(req.body.params.input)
+    .then(data => {
+      console.log(data, 'line 15')
+      weatherInfo.city = data.name;
+      weatherInfo.country = data.sys.country;
+      weatherInfo.temp = Math.ceil(data.main.temp);
+      weatherInfo.humidty = data.main.humidty;
+      weatherInfo.forecast = data.weather[0].description;
+      weatherInfo.lowTemp = data.main.temp_min;
+      weatherInfo.highTemp = data.main.temp_max;
+      weatherInfo.sunrise = data.sys.sunrise;
+      weatherInfo.sunset = data.sys.sunset;
+      weatherInfo.timeStamp = data.dt;
+    })
+    .then(() => res.send(weatherInfo))
+  //   , (body) => {
+  //     const parsed = JSON.parse(body);
+  //     console.log(parsed, 'line 15')
+  //     weatherInfo.city = parsed.name;
+  //     weatherInfo.temp = Math.ceil(parsed.main.temp);
+  //     weatherInfo.country = parsed.sys.country;
+  //     weatherInfo.forecast = parsed.weather[0].main;
+  //     res.send(weatherInfo);
+  // })
 })
 
 app.post('/forecast', (req, res) => {
