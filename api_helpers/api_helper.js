@@ -9,11 +9,9 @@ module.exports = {
         method: 'GET',
         url: `http://api.openweathermap.org/data/2.5/weather?&q=${city}&APPID=${openWeatherKey.openWeatherApiKey}&units=imperial`
       }
-      console.log(options)
+      // console.log(options)
       request(options, (error, response) => {
-        // console.log(response, 'line 14')
         const parsedBody = JSON.parse(response.body);
-        // console.log(parsedBody, 'line 16')
         if (response) {
           resolve(parsedBody)
         } else {
@@ -33,14 +31,28 @@ module.exports = {
   //   })
   // },
 
-  get5DayForecast: (city, callback) => {
-    request(`http://api.openweathermap.org/data/2.5/weather?&q=${city}&APPID=${openWeatherKey.openWeatherApiKey}&units=imperial`, (error, response, body) => {
-      if (error) {
-        console.error(error);
-      } else if (!error && response.statusCode === 200) {
-        callback(body);
+  get5DayForecast: city => {
+    return new Promise((resolve, reject) => {
+      const options = {
+        method: 'GET',
+        url: `http://api.openweathermap.org/data/2.5/forecast?&q=${city}&APPID=${openWeatherKey.openWeatherApiKey}&units=imperial`
       }
+      request(options, (err, response) => {
+        const parsed = JSON.parse(response.body);
+        if (response) {
+          resolve(parsed)
+        } else {
+          reject('failed to get forecast')
+        }
+      })
     })
+    // request(`http://api.openweathermap.org/data/2.5/weather?&q=${city}&APPID=${openWeatherKey.openWeatherApiKey}&units=imperial`, (error, response, body) => {
+    //   if (error) {
+    //     console.error(error);
+    //   } else if (!error && response.statusCode === 200) {
+    //     callback(body);
+    //   }
+    // })
   }
 }
 

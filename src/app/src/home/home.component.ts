@@ -29,16 +29,16 @@ export class HomeComponent implements OnInit {
       })
   }
 
-  // get5DayForecast() {
-  //   return this.httpClient.post('/forecast', {
-  //     params: {
-  //       input: this.input
-  //     }
-  //   })
-  //   .subscribe(data => {
-  //     console.log(data, 'line 45')
-  //   })
-  // }
+  get5DayForecast() {
+    return this.httpClient.post('/api/forecast', {
+      params: {
+        input: this.input
+      }
+    })
+    .subscribe(data => {
+      console.log(data, 'line 45')
+    })
+  }
 
   ngOnInit() {
   }

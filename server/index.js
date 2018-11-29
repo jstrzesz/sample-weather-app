@@ -25,24 +25,34 @@ app.post('/currentWeather', (req, res) => {
       weatherInfo.timeStamp = data.dt;
     })
     .then(() => res.send(weatherInfo))
-  //   , (body) => {
-  //     const parsed = JSON.parse(body);
-  //     console.log(parsed, 'line 15')
-  //     weatherInfo.city = parsed.name;
-  //     weatherInfo.temp = Math.ceil(parsed.main.temp);
-  //     weatherInfo.country = parsed.sys.country;
-  //     weatherInfo.forecast = parsed.weather[0].main;
-  //     res.send(weatherInfo);
-  // })
 })
 
 app.post('/forecast', (req, res) => {
   console.log(req.body.params.input, 'line 24')
+  let forecastInfoArray = [];
   let forecastInfo = {};
-  weather.get5DayForecast(req.body.params.input, (body) => {
-    const parsed = JSON.parse(body);
-    console.log(parsed, 'line 27')
-  })
+  weather.get5DayForecast(req.body.params.input)
+    .then(data => {
+      console.log(data, 'line 35');
+      data.list.forEach(day => {
+        forecastInfo.city = data.name;
+        forecastInfo.country = data.country;
+        forecastInfo.population = data.population;
+        forecastInfo.date = day.dt;
+        forecastInfo.temp = day.main.temp;
+        forecastInfo.min_temp = day.main.temp_min;
+        forecastInfo.max_temp = day.main.temp_max;
+        forecastInfo.pressure = day.main.pressure;
+        forecastInfo.weather = day.weather[0].main;
+        forecastInfo.weatherDesc = day.weather[0].description;
+        forecastInfo.windSpeed = day.wind.speed;
+        forecastInfo.windDir = day.wind.deg;
+        // forecastInfo.sys = day.sys;
+        forecastInfo.date_text = day.dt_txt;
+        forecastInfoArray.push(forecastInfo);
+      })
+      res.send(forecastInfoArray);
+    })
 })
 
 app.listen(port, () => {
