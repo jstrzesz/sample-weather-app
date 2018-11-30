@@ -14,6 +14,10 @@ export class HomeComponent implements OnInit {
   forecastInfo: any;
   dailyForecast: any;
   example: String = 'Hello';
+  path: string;
+  text: string;
+  time: string;
+  hour: string;
 
   constructor(private httpClient: HttpClient,
               private router: Router) { }
@@ -22,10 +26,44 @@ export class HomeComponent implements OnInit {
     this.input = e.target.value;
   }
 
+  getImagePath(e) {
+    this.path = e.target.value;
+  }
+
+  getImageText(e) {
+    this.text = e.target.value;
+  }
+
+  submitImages() {
+    return this.httpClient.post('/api/images', {
+      params: {
+        path: this.path,
+        text: this.text
+      }
+    })
+    .subscribe(res => {
+      console.log(res)
+    })
+  }
+
+  getCurrentTime() {
+    this.time = new Date().toLocaleTimeString("en-US")
+    const am_pm = this.time.slice(-2);
+    if (am_pm === 'AM') {
+      this.hour = this.time.slice(0, 2);
+    } else {
+      this.hour = (Number(this.time.slice(0, 2)) + 12).toString();
+    }
+    this.time = this.time.slice(0, 5);
+    console.log(this.time, am_pm, this.hour);
+  }
+
   getCurrentWeather() {
+    this.getCurrentTime();
     return this.httpClient.post('/api/currentWeather', {
       params: {
-        input: this.input
+        input: this.input,
+        hour: this.hour
       }
     })
       .subscribe(data => {
@@ -35,9 +73,11 @@ export class HomeComponent implements OnInit {
   }
 
   get5DayForecast() {
+    this.getCurrentTime();
     return this.httpClient.post('/api/forecast', {
       params: {
-        input: this.input
+        input: this.input,
+        hour: this.hour
       }
     })
     .subscribe(data => {
@@ -51,9 +91,18 @@ export class HomeComponent implements OnInit {
       })
       this.dailyForecast = dailyForecast;
       console.log(this.dailyForecast);
+      // this.getWeatherImage();
       // this.redirectToFiveDayForecast();
     })
   }
+
+  // getWeatherImage() {
+  //   this.dailyForecast.forEach(day => {
+  //     if (day.weatherDesc === 'overcast clouds') {
+  //       this.dailyForecast.img = '../../assets.img.cloudy_icon.png';
+  //     }
+  //   })
+  // }
 
   redirectToFiveDayForecast() {
     this.router.navigate(['/fiveDayForecast']);

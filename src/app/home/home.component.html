@@ -17,18 +17,23 @@
   <div class="row">
     <div class="col-md-2"></div>
     <div class="col-md-8" *ngFor="let weather of weatherInfo">
-      <div class="jumbotron">
+      <div class="jumbotron" [style.backgroundImage]="'url('+ weather.img +')'">
         <h1>
-          {{ weather.city }} {{ weather.country }} {{ weather.temp }}˚
+          {{ weather.city }} {{ weather.country }} {{ weather.temp }}˚ {{ time }}
         </h1>
+        <h3>{{ weather.forecast }}</h3>
       </div>
     </div>
     <div class="col-md-2"></div>
   </div>
   <div class="row">
+    <input type="text" class="form-control" id="username" (input)="getImageText($event)" />
+    <input type="text" class="form-control" id="username" (input)="getImagePath($event)" />
+    <button (click)="submitImages()">submit images stuff</button>
+  </div>
+  <div class="row">
 
     <div class="col-md-12">
-      <button type="button" class="btn btn-success" (click)="goHome()">Home</button>
         <table class="table" style="text-align: center">
         <thead>
           <tr>
@@ -46,7 +51,6 @@
             <td>{{ day.max_temp }}˚/{{ day.min_temp }}˚</td>
             <td>{{ day.windSpeed }} mph</td>
             <td>{{ day.pressure }}</td>
-            <!-- <app-five-day-forecast [data]="day"></app-five-day-forecast> -->
           </tr>
         </tbody>
       </table>

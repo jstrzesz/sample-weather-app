@@ -2,7 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const port = process.env.PORT || 3000;
 const app = express();
-const weather = require('../api_helpers/api_helper');
+const api = require('../api_helpers/api_helper');
+const weather = require('../weather/weatherHelpers');
+const db = require('../database/databaseHelpers');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -10,28 +12,42 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.post('/currentWeather', (req, res) => {
   console.log(req.body.params.input, 'line 11');
   let weatherInfo = {};
-  weather.getCurrentWeather(req.body.params.input)
+  Promise.all([
+    api.getCurrentWeather(req.body.params.input),
+    weather.createDayNightLabel(req.body.params.hour)
+  ])
     .then(data => {
       console.log(data, 'line 15')
-      weatherInfo.city = data.name;
-      weatherInfo.country = data.sys.country;
-      weatherInfo.temp = Math.ceil(data.main.temp);
-      weatherInfo.humidty = data.main.humidty;
-      weatherInfo.forecast = data.weather[0].description;
-      weatherInfo.lowTemp = data.main.temp_min;
-      weatherInfo.highTemp = data.main.temp_max;
-      weatherInfo.sunrise = data.sys.sunrise;
-      weatherInfo.sunset = data.sys.sunset;
-      weatherInfo.timeStamp = data.dt;
+      weatherInfo.time_of_day = data[1];
+      weatherInfo.city = data[0].name;
+      weatherInfo.country = data[0].sys.country;
+      weatherInfo.temp = Math.ceil(data[0].main.temp);
+      weatherInfo.humidty = data[0].main.humidty;
+      weatherInfo.forecast = data[0].weather[0].description;
+      weatherInfo.lowTemp = data[0].main.temp_min;
+      weatherInfo.highTemp = data[0].main.temp_max;
+      weatherInfo.sunrise = data[0].sys.sunrise;
+      weatherInfo.sunset = data[0].sys.sunset;
+      weatherInfo.timeStamp = data[0].dt;
     })
-    .then(() => res.send(weatherInfo))
+    .then(() => weather.createWeatherText(weatherInfo.time_of_day, weatherInfo.forecast))
+    .then(result => {
+      console.log(result, 'line 35')
+      db.findImage(result, (req, response) => {
+        weatherInfo.img = response[0].img;  
+        res.send(weatherInfo);
+      });
+    })
 })
 
 app.post('/forecast', (req, res) => {
   console.log(req.body.params.input, 'line 24')
   let forecastInfoArray = [];
   let forecastInfo = {};
-  weather.get5DayForecast(req.body.params.input)
+  Promise.all([
+    api.get5DayForecast(req.body.params.input)
+
+  ])
     .then(data => {
       console.log(data.city, 'line 35');
       forecastInfoArray = data.list.map(day => {
@@ -58,6 +74,15 @@ app.post('/forecast', (req, res) => {
       })
       res.send(forecastInfoArray);
     })
+})
+
+app.post('/images', (req, res) => {
+  console.log(req.body.params)
+  const imgObj = {
+    text: req.body.params.text,
+    img: req.body.params.path
+  }
+  db.saveImage(imgObj);
 })
 
 app.listen(port, () => {
