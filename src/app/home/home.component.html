@@ -32,12 +32,12 @@
     <button (click)="submitImages()">submit images stuff</button>
   </div>
   <div class="row">
-
     <div class="col-md-12">
         <table class="table" style="text-align: center">
         <thead>
           <tr>
             <th>Day</th>
+            <th></th>
             <th>Weather Description</th>
             <th>Temperature: High/Low</th>
             <th>Wind</th>
@@ -47,6 +47,9 @@
         <tbody *ngFor="let day of dailyForecast">
           <tr>
             <td>{{ day.day }}</td>
+            <td class="image">
+              <img [src]="day.img.img">
+            </td>
             <td>{{ day.weatherDesc }}</td>
             <td>{{ day.max_temp }}˚/{{ day.min_temp }}˚</td>
             <td>{{ day.windSpeed }} mph</td>

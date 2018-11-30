@@ -1,6 +1,7 @@
 const express = require('express');
 
 module.exports = {
+
   createDayNightLabel: (number) => {
     let text;
     return new Promise((resolve, reject) => {
@@ -16,11 +17,12 @@ module.exports = {
       }
     })
   },
+
   createWeatherText: (text, forecast) => {
     let forecastArray = [];
     return new Promise((resolve, reject) => {
       forecast = forecast.split(' ');
-      console.log(forecast, 'line 28')
+      // console.log(forecast, 'line 28')
       if (forecast.includes('clouds') || forecast.includes('cloudy')) {
         forecastArray.push('cloudy');
       } else if (forecast.includes('storm') || forecast.includes('thunderstorm')) {
@@ -34,11 +36,11 @@ module.exports = {
         }
       if (text === 'day') {
         forecastArray.push('day');
-      } else if (test === 'night') {
+      } else if (text === 'night') {
         forecastArray.push('night');
       }
       forecastArray = forecastArray.join('-');
-      console.log(forecastArray, 'line 33')
+      // console.log(forecastArray, 'line 33')
       if (forecastArray === 'clear-day' || forecastArray === 'clear-night' || 
           forecastArray === 'rain-day' || forecastArray === 'rain-night' ||
           forecastArray === 'cloudy-day' || forecastArray === 'cloudy-night' ||
@@ -47,6 +49,44 @@ module.exports = {
             resolve(forecastArray, 'forecast for image')
           } else {
             reject('forecast for Image failed')
+          }
+    })
+  },
+  createWeatherLabelForFiveDayForecast: (forecast) => {
+    let label = '';
+    return new Promise((resolve, reject) => {
+      forecast = forecast.split(' ');
+      console.log(forecast, 'line 59')
+      if (forecast.includes('clear')) {
+        label = 'sunny';
+      } else if (forecast.includes('sunny') && !forecast.includes('partly')) {
+        label = 'sunny';
+      } else if (forecast.includes('sunny') && forecast.includes('partly')) {
+        label = 'partly sunny';
+      } else if (forecast.includes('cloudy') && !forecast.includes('partly')) {
+        label = 'cloudy';
+      } else if (forecast.includes('cloudy') && forecast.includes('partly')) {
+        label = 'partly cloudy';
+      } else if (forecast.includes('clouds')) {
+        label = 'cloudy';
+      } else if (forecast.includes('rain') || forecast.includes('rainy')) {
+        label = 'rainy';
+      } else if (forecast.includes('snow') || forecast.includes('snowy')) {
+        label = 'snowy';
+      } else if (forecast.includes('fog') || forecast.includes('foggy')) {
+        label = 'foggy';
+      } else if (forecast.includes('wind') || forecast.includes('windy') || forecast.includes('winds')) {
+        label = 'windy';
+      } else if (forecast.includes('storms') || forecast.includes('stormy') || forecast.includes('storms') || 
+                  forecast.includes('thunderstorm') || forecast.includes('thunderstorms')) {
+        label = 'stormy';
+      }
+      console.log(label, 'line 82')
+      if (label === 'sunny' || label === 'partly sunny' || label === 'partly cloudy' || label === 'cloudy' || 
+          label === 'rainy' || label === 'snowy' || label === 'foggy' || label === 'windy' || label === 'stormy') {
+            resolve(label);
+          } else {
+            reject('labelling failed')
           }
     })
   }

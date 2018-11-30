@@ -41,6 +41,7 @@ const saveImage = (imgObject, response) => {
 const query = Image.find();
 
 const findImage = (weather, callback) => {
+  console.log(weather, 'line 44 dbHeplers')
   Image.find({ text: weather }).select('img').exec(callback);
 }
 

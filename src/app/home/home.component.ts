@@ -49,10 +49,12 @@ export class HomeComponent implements OnInit {
   getCurrentTime() {
     this.time = new Date().toLocaleTimeString("en-US")
     const am_pm = this.time.slice(-2);
-    if (am_pm === 'AM') {
-      this.hour = this.time.slice(0, 2);
-    } else {
-      this.hour = (Number(this.time.slice(0, 2)) + 12).toString();
+    if (am_pm === 'PM' && this.time.slice(0, 2) === '12' || am_pm === 'AM') {
+      this.hour = this.time.slice(0, 2)
+    } else if (am_pm === 'AM' && this.time.slice(0, 2) === '12'){
+      this.hour = '00';
+    } else if (am_pm === 'PM' && Number(this.time.slice(0, 2)) > 12) {
+      this.hour = Number(this.time.slice(0, 2) + 12).toString();
     }
     this.time = this.time.slice(0, 5);
     console.log(this.time, am_pm, this.hour);
@@ -90,9 +92,24 @@ export class HomeComponent implements OnInit {
         }
       })
       this.dailyForecast = dailyForecast;
+      this.getWeatherIcon();
       console.log(this.dailyForecast);
       // this.getWeatherImage();
       // this.redirectToFiveDayForecast();
+    })
+  }
+
+  getWeatherIcon() {
+    this.forecastInfo.forEach(day => {
+      this.httpClient.post('/api/weatherIcon', {
+        params: {
+          text: day.weatherDesc
+        }
+      })
+      .subscribe(result => {
+        console.log(result)
+        day.img = result;
+      })
     })
   }
 
