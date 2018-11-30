@@ -4,12 +4,14 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './src/home/home.component';
+import { HomeComponent } from './home/home.component';
+import { FiveDayForecastComponent } from './five-day-forecast/five-day-forecast.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
+    FiveDayForecastComponent
   ],
   imports: [
     BrowserModule,

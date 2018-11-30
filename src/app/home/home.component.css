@@ -1,0 +1,27 @@
+table {
+  border-radius: 5px 5px;
+}
+
+thead {
+  background-color: lightblue
+}
+
+.image {
+  width: 10px;
+  height: 10px;
+}
+
+.jumbotron {
+  color: white;
+  text-shadow: 2px 2px #27213B;
+}
+
+.btn-current {
+  background-color: lightgreen;
+  border-radius: 5px;
+}
+
+.btn-forecast {
+  background-color: lightblue;
+  border-radius: 5px;
+}

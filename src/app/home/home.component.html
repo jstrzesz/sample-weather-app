@@ -1,0 +1,70 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-10">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="navbar-toggler-icon"></span>
+        </button> <a class="navbar-brand" href="#">Forecast App</a>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <form class="form-inline">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search...." (input)="getCity($event)"/>
+            <button class="btn-current" type="button" (click)="getCurrentWeather()">
+              Current Weather
+            </button>
+            <br>
+            <button class="btn-forecast" type="button" (click)="get5DayForecast()">
+              5 Day Forecast
+            </button>
+          </form>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="navbar-toggler-icon"></span>
+          </button> <a class="navbar-brand" href="#">{{ city }}</a>
+        </div>
+      </nav>
+    </div>
+    <div class="col-md-8">
+    </div>
+    <div class="col-md-2"></div>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8" *ngFor="let weather of weatherInfo">
+      <div class="jumbotron" [style.backgroundImage]="'url('+ weather.img +')'">
+        <h1>
+          {{ weather.city }} {{ weather.temp }}˚ {{ time }}
+        </h1>
+        <h3>{{ weather.forecast }}</h3>
+      </div>
+    </div>
+    <div class="col-md-2"></div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+        <table class="table" style="text-align: center">
+        <thead>
+          <tr>
+            <th>Day</th>
+            <th></th>
+            <th>Weather Description</th>
+            <th>Temperature: High/Low</th>
+            <th>Wind</th>
+            <th>Pressure</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let day of dailyForecast">
+          <tr>
+            <td>{{ day.day }}</td>
+            <td class="image">
+              <img [src]="day.img.img">
+            </td>
+            <td>{{ day.weatherDesc }}</td>
+            <td>{{ day.max_temp }}˚/{{ day.min_temp }}˚</td>
+            <td>{{ day.windSpeed }} mph</td>
+            <td>{{ day.pressure }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
