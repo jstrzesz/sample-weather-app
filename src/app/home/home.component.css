@@ -12,5 +12,16 @@ thead {
 }
 
 .jumbotron {
-  color: white
+  color: white;
+  text-shadow: 2px 2px #27213B;
+}
+
+.btn-current {
+  background-color: lightgreen;
+  border-radius: 5px;
+}
+
+.btn-forecast {
+  background-color: lightblue;
+  border-radius: 5px;
 }

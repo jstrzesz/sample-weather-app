@@ -7,9 +7,8 @@ module.exports = {
     return new Promise((resolve, reject) => {
       const options = {
         method: 'GET',
-        url: `http://api.openweathermap.org/data/2.5/weather?&q=${city}&APPID=${openWeatherKey.openWeatherApiKey}&units=imperial`
+        url: `http://api.openweathermap.org/data/2.5/weather?&q=${city}&APPID=${openWeatherKey.openWeatherApiKey}&units=metric`
       }
-      // console.log(options)
       request(options, (error, response) => {
         const parsedBody = JSON.parse(response.body);
         if (response) {
@@ -20,22 +19,12 @@ module.exports = {
       })
     })
   },
-  // getCurrentWeather: (city, callback) => {
-  //   request(`http://api.openweathermap.org/data/2.5/weather?&q=${city}&APPID=${openWeatherKey.openWeatherApiKey}&units=imperial`, (error, response, body) => {
-  //     if (error) {
-  //       console.error(error)
-  //     } else if (!error && response.statusCode === 200) {
-  //       // console.log(body, 'line 30')
-  //       callback(body);
-  //     }
-  //   })
-  // },
 
   get5DayForecast: city => {
     return new Promise((resolve, reject) => {
       const options = {
         method: 'GET',
-        url: `http://api.openweathermap.org/data/2.5/forecast?&q=${city}&APPID=${openWeatherKey.openWeatherApiKey}&units=imperial`
+        url: `http://api.openweathermap.org/data/2.5/forecast?&q=${city}&APPID=${openWeatherKey.openWeatherApiKey}&units=metric`
       }
       request(options, (err, response) => {
         const parsed = JSON.parse(response.body);
@@ -46,14 +35,5 @@ module.exports = {
         }
       })
     })
-    // request(`http://api.openweathermap.org/data/2.5/weather?&q=${city}&APPID=${openWeatherKey.openWeatherApiKey}&units=imperial`, (error, response, body) => {
-    //   if (error) {
-    //     console.error(error);
-    //   } else if (!error && response.statusCode === 200) {
-    //     callback(body);
-    //   }
-    // })
   }
 }
-
-// `api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&apikey=a687587b77d66b53ca1b2305455c2480`

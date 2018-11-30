@@ -1,15 +1,28 @@
 <div class="container">
   <div class="row">
-    <div class="col-md-2"></div>
+    <div class="col-md-10">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="navbar-toggler-icon"></span>
+        </button> <a class="navbar-brand" href="#">Forecast App</a>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <form class="form-inline">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search...." (input)="getCity($event)"/>
+            <button class="btn-current" type="button" (click)="getCurrentWeather()">
+              Current Weather
+            </button>
+            <br>
+            <button class="btn-forecast" type="button" (click)="get5DayForecast()">
+              5 Day Forecast
+            </button>
+          </form>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="navbar-toggler-icon"></span>
+          </button> <a class="navbar-brand" href="#">{{ city }}</a>
+        </div>
+      </nav>
+    </div>
     <div class="col-md-8">
-      <input  type="email" 
-              class="form-control" 
-              id="username" 
-              (input)="getCity($event)" />
-      <button class="submit"
-              (click)="getCurrentWeather()">Submit</button>
-      <button class="button"
-              (click)="get5DayForecast()">5 Day Forecast</button>
     </div>
     <div class="col-md-2"></div>
   </div>
@@ -19,17 +32,12 @@
     <div class="col-md-8" *ngFor="let weather of weatherInfo">
       <div class="jumbotron" [style.backgroundImage]="'url('+ weather.img +')'">
         <h1>
-          {{ weather.city }} {{ weather.country }} {{ weather.temp }}˚ {{ time }}
+          {{ weather.city }} {{ weather.temp }}˚ {{ time }}
         </h1>
         <h3>{{ weather.forecast }}</h3>
       </div>
     </div>
     <div class="col-md-2"></div>
-  </div>
-  <div class="row">
-    <input type="text" class="form-control" id="username" (input)="getImageText($event)" />
-    <input type="text" class="form-control" id="username" (input)="getImagePath($event)" />
-    <button (click)="submitImages()">submit images stuff</button>
   </div>
   <div class="row">
     <div class="col-md-12">

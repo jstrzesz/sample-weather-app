@@ -18,6 +18,7 @@ export class HomeComponent implements OnInit {
   text: string;
   time: string;
   hour: string;
+  city: String;
 
   constructor(private httpClient: HttpClient,
               private router: Router) { }
@@ -34,30 +35,32 @@ export class HomeComponent implements OnInit {
     this.text = e.target.value;
   }
 
-  submitImages() {
-    return this.httpClient.post('/api/images', {
-      params: {
-        path: this.path,
-        text: this.text
-      }
-    })
-    .subscribe(res => {
-      console.log(res)
-    })
-  }
-
   getCurrentTime() {
     this.time = new Date().toLocaleTimeString("en-US")
     const am_pm = this.time.slice(-2);
-    if (am_pm === 'PM' && this.time.slice(0, 2) === '12' || am_pm === 'AM') {
-      this.hour = this.time.slice(0, 2)
-    } else if (am_pm === 'AM' && this.time.slice(0, 2) === '12'){
-      this.hour = '00';
-    } else if (am_pm === 'PM' && Number(this.time.slice(0, 2)) > 12) {
-      this.hour = Number(this.time.slice(0, 2) + 12).toString();
+    if (this.time[1] === ':') {
+      this.time = `0${this.time}`;
+      if (am_pm === 'PM' && this.time.slice(0, 2) === '12' || am_pm === 'AM') {
+        this.hour = this.time.slice(0, 2)
+      } else if (am_pm === 'AM' && this.time.slice(0, 2) === '12') {
+        this.hour = '00';
+      } else if (am_pm === 'PM' && Number(this.time.slice(0, 2)) < 12) {
+        let num = Number(this.time.slice(0, 2));
+        num += 12;
+        this.hour = num.toString();
+      }
+    } else {
+      if (am_pm === 'PM' && this.time.slice(0, 2) === '12' || am_pm === 'AM') {
+        this.hour = this.time.slice(0, 2)
+      } else if (am_pm === 'AM' && this.time.slice(0, 2) === '12'){
+        this.hour = '00';
+      } else if (am_pm === 'PM' && Number(this.time.slice(0, 2)) < 12) {
+        let num = Number(this.time.slice(0, 2));
+        num += 12;
+        this.hour = num.toString();
+      }
     }
     this.time = this.time.slice(0, 5);
-    console.log(this.time, am_pm, this.hour);
   }
 
   getCurrentWeather() {
@@ -71,6 +74,7 @@ export class HomeComponent implements OnInit {
       .subscribe(data => {
         console.log(data, 'line 25');
         this.weatherInfo.push(data);
+        this.city = this.weatherInfo[0].city;
       })
   }
 
@@ -93,9 +97,7 @@ export class HomeComponent implements OnInit {
       })
       this.dailyForecast = dailyForecast;
       this.getWeatherIcon();
-      console.log(this.dailyForecast);
-      // this.getWeatherImage();
-      // this.redirectToFiveDayForecast();
+      this.city = dailyForecast[0].city;
     })
   }
 
@@ -107,26 +109,13 @@ export class HomeComponent implements OnInit {
         }
       })
       .subscribe(result => {
-        console.log(result)
         day.img = result;
       })
     })
   }
 
-  // getWeatherImage() {
-  //   this.dailyForecast.forEach(day => {
-  //     if (day.weatherDesc === 'overcast clouds') {
-  //       this.dailyForecast.img = '../../assets.img.cloudy_icon.png';
-  //     }
-  //   })
-  // }
-
   redirectToFiveDayForecast() {
     this.router.navigate(['/fiveDayForecast']);
-  }
-
-  filterDayAndNightForForecast() {
-    // this.forecastInfo.
   }
 
   ngOnInit() {
