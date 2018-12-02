@@ -30,6 +30,8 @@ module.exports = {
           forecastArray.push('snow');
         } else if (forecast.includes('clouds') || forecast.includes('cloudy')) {
           forecastArray.push('cloudy')
+        } else if (forecast.includes('rain') || forecast.inclues('rainy')) {
+          forecastArray.push('rain')
         }
       if (text === 'day') {
         forecastArray.push('day');
